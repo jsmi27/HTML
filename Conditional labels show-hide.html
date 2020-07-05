@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Register</title>
+</head>
+<style>
+	[data-dependent] {
+  display: none;
+}
+</style>
+
+<body>	
+	<span>Vehicle:</span>
+	<span><select id="vehicle">
+	  <option value="0">Bike</option>
+	  <option value="1">Car</option>
+	</select></span>
+
+	<p data-dependent='{"vehicle": "0" }'>Brand :  
+		Pulsar<input type="radio" value="pulsar" name="bike" />
+		Hero Honda<input type="radio" value="hero" name="bike" />
+	</p>
+
+	<p data-dependent='{"vehicle": "1" }'>Fuel type :  
+		Petrol<input type="radio" value="petrol" name="fueltype" />
+		Diesel<input type="radio" value="diesel" name="fueltype" />
+	</p>
+
+	<p id="dessert">Dessert : 
+	  Ice cream<input type="radio" value="icecream" name="dessert" />
+	  Cake<input type="radio" value="cake" name="dessert"/>
+	</p>
+
+    <select data-dependent='{"dessert": "icecream" }'>
+	  <option value="0">Vanilla</option>
+	  <option value="1">Strawberry</option>
+	  <option value="2">Butter-Scotch</option>
+	</select>
+
+	<p data-dependent='{"dessert": "cake" }'>Type of cake :  
+		Chocolate Cake:<input type="radio" value="chococake" name="cake" />
+		Fruit Cake:<input type="radio" value="fruitcake" name="cake" />
+		Black Forest Cake:<input type="radio" value="blackforestcake" name="cake" />
+	</p>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script>
+		checkDependencies();
+
+$("select[id]").on('change', function() {
+
+  checkDependencies();
+});
+
+$("[id] > :radio").on('click', function() {
+
+  checkDependencies();
+});
+
+function checkDependencies() {
+
+  $("[data-dependent]").each(function() {
+
+    $dependent = $(this);
+
+    var data = $(this).data("dependent");
+
+    var keyCount = Object.keys(data).length;
+
+    var checkedCount = 0;
+
+    var setVisible = false;
+
+    var dependentValues = $.map(data, function(value, index) {
+      return value;
+    });
+
+
+    $("[id]").each(function() {
+
+      var hasRadioButtons = $(this).find(":radio").length;
+
+      var elementId = $(this).attr("id");
+
+      var elementValue;
+
+      if (hasRadioButtons) {
+
+        elementValue = $(this).find(":checked").val()
+
+      } else {
+
+        elementValue = $(this).val();
+      }
+
+      for (i = 0; i < keyCount; i++) {
+
+        var dependentId = Object.keys(data)[i];
+
+        //if multiple values for one key
+        var values = dependentValues[i].split(",");
+
+        for (j = 0; j < values.length; j++) {
+          var dependentValue = values[j];
+
+          if (elementId === dependentId) {
+
+            //check if value selected
+            if (elementValue === dependentValue) {
+
+              checkedCount += 1;
+
+              setVisible = true;
+
+              $dependent.show();
+
+              //found element, exit inner loop
+              break;
+
+            } else {
+
+              //hide if not previously set visible
+              if (!setVisible)
+                $dependent.hide();
+
+              //if all element dependencies found exit inner loop
+              if (keyCount === checkedCount)
+                break;
+
+            }
+          }
+
+        }
+      }
+
+    });
+
+  });
+
+}
+	</script>
+</body>
+</html>
