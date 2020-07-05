@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		.control:not(:checked) ~ .conditional,
+			#option-2:not(:checked) ~ .conditional {
+				clip: rect(0 0 0 0);
+				position: absolute;
+			}
+	</style>
+</head>
+<body>
+	<p>CSS way to hide/show some form elements based on their value</p>
+		<form action="">
+			<fieldset>
+						<input type="checkbox" id="requirement" class="control">
+						<label for="requirement">Check me</label>
+						<fieldset class="conditional">
+								<li>
+									<label>Related subfield</label>
+									<input type="text" id="option">
+								</li>
+						</fieldset>
+			</fieldset>
+		</form>
+            <p>In the above example, I use the class .control to indicate which fields are the control and .conditional to indicate what will be displayed when the control is checked.  I use sibling selectors (<code>~</code>) to tie the conditional to the control</p>
+</body>
+</html>
