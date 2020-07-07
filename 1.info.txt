@@ -1,0 +1,11 @@
+Elements tab is for the HTML
+Style tab is for the CSS
+Console tab is to enter javascript.
+
+css format:-
+
+Selector{
+   Property: Value;
+}
+
+https://zero-to-mastery.github.io/resources/
